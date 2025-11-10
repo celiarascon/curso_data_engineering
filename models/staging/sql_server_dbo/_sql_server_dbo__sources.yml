@@ -1,0 +1,148 @@
+sources:
+  - name: sql_server_dbo
+    database: alumno9_dev_bronze_db
+    schema: sql_server_dbo
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+
+      - name: events
+        description: "events table"
+        columns:
+          - name: event_id
+            tests:
+              - not_null
+              - unique
+          - name: page_url
+          - name: event_type
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['page_view', 'add_to_cart', 'checkout', 'package_shipped']
+          - name: user_id
+          - name: product_id
+          - name: session_id
+          - name: created_at
+          - name: order_id
+          - name: _fivetran_synced
+
+        config:
+          loaded_at_field: _fivetran_synced
+      - name: addresses
+        description: "addresses table"
+        columns:
+          - name: address_id
+            tests:
+              - not_null
+              - unique
+          - name: zipcode
+          - name: country
+            tests:
+              - not_null
+          - name: address
+          - name: state
+          - name: _fivetran_synced
+
+        config:
+          loaded_at_field: _fivetran_synced
+      - name: orders
+        description: "orders table"
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - unique
+          - name: shipping_service
+          - name: shipping_cost
+          - name: address_id
+          - name: created_at
+          - name: promo_id
+          - name: estimated_delivery_at
+          - name: order_cost
+          - name: user_id
+          - name: order_total
+          - name: delivered_at
+          - name: tracking_id
+          - name: status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['placed', 'preparing', 'shipped', 'delivered', 'returned', 'cancelled']
+          - name: _fivetran_synced
+
+        config:
+          loaded_at_field: _fivetran_synced
+      - name: order_items
+        description: "order_items table"
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+          - name: product_id
+            tests:
+              - not_null
+          - name: quantity
+            tests:
+              - not_null
+          - name: _fivetran_synced
+
+        config:
+          loaded_at_field: _fivetran_synced
+      - name: products
+        description: "products table"
+        columns:
+          - name: product_id
+            tests:
+              - not_null
+              - unique
+          - name: price
+            tests:
+              - not_null
+          - name: name
+          - name: inventory
+          - name: _fivetran_synced
+
+        config:
+          loaded_at_field: _fivetran_synced
+      - name: promos
+        description: "promos table"
+        columns:
+          - name: promo_id
+            tests:
+              - not_null
+              - unique
+          - name: discount
+          - name: status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['active', 'inactive']
+          - name: _fivetran_synced
+
+        config:
+          loaded_at_field: _fivetran_synced
+      - name: users
+        description: "users table"
+        columns:
+          - name: user_id
+            tests:
+              - not_null
+              - unique
+          - name: updated_at
+          - name: address_id
+          - name: last_name
+          - name: created_at
+          - name: phone_number
+          - name: total_orders
+          - name: first_name
+          - name: email
+            tests:
+              - not_null
+          - name: _fivetran_synced
+        config:
+          loaded_at_field: _fivetran_synced
