@@ -1,0 +1,37 @@
+sources:
+
+  - name: google_sheets
+    schema: google_sheets
+    database: alumno9_dev_bronze_db
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+
+    tables:
+
+      - name: budget
+        columns:
+          - name: _row
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('sql_server_db','products')
+                    field: product_id
+          - name: quantity
+            tests:
+              - positive_values
+          - name: month
+          - name: _fivetran_synced
+        config:
+          loaded_at_field: _fivetran_synced
+    config:
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
