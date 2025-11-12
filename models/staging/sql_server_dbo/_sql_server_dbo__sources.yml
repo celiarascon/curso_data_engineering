@@ -1,6 +1,6 @@
 sources:
   - name: sql_server_dbo
-    database: alumno9_dev_bronze_db
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"    
     schema: sql_server_dbo
 
     quoting:
